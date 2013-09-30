@@ -2,7 +2,7 @@
 (function() {
   exports.index = function(req, res) {
     return res.render('index', {
-      title: 'GyazzIndex'
+      title: 'Gyaph'
     });
   };
 
