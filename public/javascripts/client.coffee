@@ -15,6 +15,8 @@ $ ->
   svg = d3.select('body').append('svg')
   .attr('width',width).attr('height',height)
 
+
+  # force layout settings
   force = d3.layout.force()
   .nodes(nodes)
   .links(links)
@@ -23,6 +25,7 @@ $ ->
   .distance(100)
   .charge(-500)
 
+  # calculate x and y
   tick = () ->
     link.attr("x1",(d) ->
       d.source.x
@@ -37,6 +40,7 @@ $ ->
       return "translate("+d.x+","+d.y+")"
     )
 
+  # zoomIn event
   zoomIn = (json) ->
     console.log "zoomIn: "+json.title
     hideNodes = _.reject(nodes,(node) ->
@@ -71,6 +75,7 @@ $ ->
   .style("stroke","black")
   #force.on("tick",tick).start()
 
+  # called every time
   update = () ->
     node = svg.selectAll(".node").data(nodes)
     node.enter().insert("g")
@@ -89,7 +94,7 @@ $ ->
     .on("click",zoomIn)
     .call(force.drag)
 
-    # bad code
+    # must rewrite
     svg.selectAll("text").remove()
     svg.selectAll("circle").remove()
 
@@ -120,7 +125,8 @@ $ ->
     .text((d) ->
       return d.title
     ).style("opacity",0.7)
-    
+
+    # link style
     link = svg.selectAll(".link").data(links)
     link.enter().insert("line")
     .attr("class","link")
@@ -130,6 +136,9 @@ $ ->
 
     force.on("tick",tick).start()
 
+  # connection
+
+  # add node
   socket.on("add node",(json) ->
     console.log json
     json.id = nodes.length
@@ -137,12 +146,16 @@ $ ->
     titles = _.pluck(nodes,'title')
     update()
   )
+  # update node
+  # must fix
+  # Now only access
   socket.on("update node",(json) ->
     console.log json
     node = _.findWhere(nodes,title:json.title)
     node.access = json.access
     update()
   )
+  # add link
   socket.on("add link",(json) ->
     if _.has(json,"source") and _.has(json,"target")
       links.push json
