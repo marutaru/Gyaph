@@ -118,7 +118,7 @@ getGyazzList = (socket) ->
         lists = JSON.parse(body)
       catch error
         console.log "getGyazzList:"+error
-      for list,i in lists when i < 50
+      for list,i in lists when i < 50 # display nodes
         node =
           "title": list[0]
         socket.json.emit("add node",node)

@@ -1,4 +1,5 @@
 $ ->
+  # for local
   socket = io.connect('http://localhost:3000')
 
   width = 1000
@@ -53,6 +54,12 @@ $ ->
     svg.selectAll("line").data(links).exit().remove()
     socket.json.emit("zoom json",json)
     update()
+
+  # zoomOut event
+  zoomOut = () ->
+    console.log "zoomOut"
+    nodes.length = 0
+
      
   # init node
   node = svg.selectAll(".node").data(nodes)
